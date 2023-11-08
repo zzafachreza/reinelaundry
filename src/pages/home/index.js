@@ -3,7 +3,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { ButtonAmbilTanpaRibet, ButtonPilihSendiri, DefaultPorfile, IconInfoLaundry, LogoLaundry, MeProfile, Notify, NotifyInfoLaundry } from '../../assets'
 import colors from '../../utils/colors'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getData } from '../../localstorage';
+import { apiURL, getData, storeData } from '../../localstorage';
+import axios from 'axios';
 
 export default function HomeScreen({ navigation }) {
   const [profileImage, setProfileImage] = useState(null);
@@ -13,24 +14,19 @@ export default function HomeScreen({ navigation }) {
   useEffect(() => {
     // Mengambil data dari local storage dan mengatur ke dalam state data
     getData('androiduser').then(response => {
-      setData(response);
-      console.log('Data user:', response);
-      const username = response.username;
-      loadProfileImageFromLocal(username); // Memanggil fungsi ini untuk mengambil gambar profil dari local storage
+
+
+      axios.post(apiURL + 'get_user', {
+        email: response.email
+      }).then(res => {
+        storeData('androiduser', res.data);
+        setData(res.data);
+      })
+
     });
   }, []);
 
 
-  const loadProfileImageFromLocal = async (id) => {
-    try {
-      const profileImageData = await AsyncStorage.getItem(`profileImage_${id}`);
-      if (profileImageData) {
-        setProfileImage(profileImageData);
-      }
-    } catch (error) {
-      console.error('Error loading image from local storage:', error);
-    }
-  };
 
 
   useEffect(() => {

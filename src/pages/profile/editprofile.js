@@ -12,6 +12,14 @@ export default function EditProfile({ navigation, route }) {
   const [data, setData] = useState(route.params);
 
 
+  useEffect(() => {
+    axios.post(apiURL + 'get_user', {
+      email: route.params.email
+    }).then(res => {
+      setData(res.data)
+    })
+  }, [])
+
 
   const handleUploadPhoto = () => {
     let options = {
@@ -59,9 +67,10 @@ export default function EditProfile({ navigation, route }) {
   // ...
 
   const handleSaveChanges = () => {
+    // console.log(data)
     axios.post(apiURL + 'update_profile', data).then(res => {
       storeData('androiduser', res.data.data);
-      navigation.replace('SplashScreen');
+
       navigation.reset({
         index: 0,
         routes: [{ name: 'SplashScreen' }],
@@ -116,7 +125,7 @@ export default function EditProfile({ navigation, route }) {
 
             {/* NAME PROFILE */}
             <View style={{ marginTop: 20 }}>
-              <TextInput style={{
+              <TextInput placeholder='Enter your name' style={{
                 padding: 10, backgroundColor: '#ececec', borderWidth: 1, borderRadius: 10, height: 40,
                 color: 'black', fontFamily: 'Poppins-Regular', fontSize: 12, paddingRight: 10, paddingLeft: 10,
               }}
@@ -132,7 +141,7 @@ export default function EditProfile({ navigation, route }) {
 
             {/* NOMOR HP */}
             <View style={{ marginTop: 20 }}>
-              <TextInput style={{
+              <TextInput placeholder='Enter your phone number' style={{
                 padding: 10, backgroundColor: '#ececec', borderWidth: 1, borderRadius: 10, height: 40,
                 color: 'black', fontFamily: 'Poppins-Regular', fontSize: 12, paddingRight: 10, paddingLeft: 10,
               }}
@@ -148,7 +157,7 @@ export default function EditProfile({ navigation, route }) {
 
             {/* ALAMAT RUMAH */}
             <View style={{ marginTop: 20 }}>
-              <TextInput style={{
+              <TextInput placeholder='Enter your address' style={{
                 padding: 10, backgroundColor: '#ececec', borderWidth: 1, borderRadius: 10, height: 40,
                 color: 'black', fontFamily: 'Poppins-Regular', fontSize: 12, paddingRight: 10, paddingLeft: 10,
               }}

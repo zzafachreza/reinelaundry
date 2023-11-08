@@ -18,7 +18,6 @@ export default function LupaPassword({ navigation }) {
                 email: email
             }).then(res => {
 
-
                 navigation.navigate('LupaPassword2', {
                     otp: res.data
                 })

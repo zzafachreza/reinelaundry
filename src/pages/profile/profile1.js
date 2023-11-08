@@ -19,7 +19,15 @@ export default function Profile1({ navigation }) {
 
   useEffect(() => {
     getData('androiduser').then((response) => {
-      setData(response);
+
+
+      axios.post(apiURL + 'get_user', {
+        email: response.email
+      }).then(res => {
+        storeData('androiduser', res.data);
+        setData(res.data)
+      })
+
       console.log('Data User: ', response);
       axios.post(apiURL + 'transaksi', {
         fid_user: response.id

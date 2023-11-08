@@ -1,5 +1,5 @@
 import CheckBox from '@react-native-community/checkbox'; // Import CheckBox
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Alert,
   Image,
@@ -12,13 +12,13 @@ import {
   Platform,
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import {Calenda1, LeftArrow, LogoLaundry, MapPointLogo, back } from '../../assets';
+import { Calenda1, LeftArrow, LogoLaundry, MapPointLogo, back } from '../../assets';
 import colors from '../../utils/colors';
-import { MYAPP, getData } from '../../localstorage';
+import { MYAPP, apiURL, getData } from '../../localstorage';
+import axios from 'axios';
 
+export default function AmbilTanpaRibet({ navigation }) {
 
-export default function AmbilTanpaRibet({navigation}) {
-  
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [cuciSajaChecked, setCuciSajaChecked] = useState(false);
@@ -79,10 +79,30 @@ export default function AmbilTanpaRibet({navigation}) {
         [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
       );
     } else {
-      navigation.navigate('AmbilTanpaRibet2');
+
+      console.log({
+        fid_user: data.id,
+        lokasi: lokasi.length == 0 ? data.alamat : lokasi,
+        tanggal_ambil: selectedDate,
+        jenis: siapPakaiChecked ? 'Siap Pakai' : 'Cuci Saja',
+      });
+
+      axios.post(apiURL + 'transaksi_add_ambil', {
+        fid_user: data.id,
+        lokasi: lokasi.length == 0 ? data.alamat : lokasi,
+        tanggal_ambil: selectedDate,
+        jenis: siapPakaiChecked ? 'Siap Pakai' : 'Cuci Saja',
+      }).then(res => {
+        console.log(res.data);
+        navigation.navigate('AmbilTanpaRibet2', {
+          kode: res.data
+        });
+      })
+
+
     }
   };
-  
+
   useEffect(() => {
     // Mengambil data dari local storage dan mengatur ke dalam state data
     getData('androiduser').then(response => {
@@ -90,13 +110,13 @@ export default function AmbilTanpaRibet({navigation}) {
       console.log('Data user:', response);
     });
   }, []);
-    
-  
-  
- 
-  
+
+
+
+
+
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
       <View
         style={{
           padding: 20,
@@ -106,34 +126,34 @@ export default function AmbilTanpaRibet({navigation}) {
           flexDirection: 'row',
           justifyContent: 'center',
         }}>
-        <TouchableOpacity onPress={handleBack} style={{left: -48}}>
+        <TouchableOpacity onPress={handleBack} style={{ left: -48 }}>
           <Image
-            style={{height: 45, width: 45, }}
+            style={{ height: 45, width: 45, }}
             source={back}
           />
         </TouchableOpacity>
-        <View style={{alignItems: 'center'}}>
+        <View style={{ alignItems: 'center' }}>
           <Text
             style={{
               color: colors.black,
               fontFamily: 'Poppins-SemiBold',
               fontSize: 20,
               textAlign: 'center',
-              top:10,
-              right:10
+              top: 10,
+              right: 10
             }}>
             Ambil Tanpa Ribet
           </Text>
         </View>
       </View>
 
-     
 
 
-        {/* ==== */}
 
-      <ScrollView style={{flex: 1}} horizontal={false}>
-        <View style={{padding: 10}}>
+      {/* ==== */}
+
+      <ScrollView style={{ flex: 1 }} horizontal={false}>
+        <View style={{ padding: 10 }}>
           {/* Lokasi Anda */}
           <View
             style={{
@@ -148,7 +168,7 @@ export default function AmbilTanpaRibet({navigation}) {
                 justifyContent: 'center',
               }}>
               <Image
-                style={{tintColor: 'white', height: 40, width: 39}}
+                style={{ tintColor: 'white', height: 40, width: 39 }}
                 source={MapPointLogo}
               />
               <Text
@@ -160,27 +180,27 @@ export default function AmbilTanpaRibet({navigation}) {
                 Lokasi Anda
               </Text>
             </View>
-            <View style={{marginTop: 10}}>
+            <View style={{ marginTop: 10 }}>
               <TextInput
                 style={{
                   backgroundColor: 'white',
                   borderRadius: 5,
-                  borderWidth: 1, 
-                  borderColor:'white',
+                  borderWidth: 1,
+                  borderColor: 'white',
                   height: 40,
-                  padding:10,
+                  padding: 10,
                   color: 'black',
                   fontFamily: 'Poppins-Regular',
                   fontSize: 14,
-                  fontWeight: 'bold', 
+                  fontWeight: 'bold',
                 }}
                 placeholder="Masukan Lokasi Anda"
                 placeholderTextColor="gray"
                 value={editing ? lokasi : data.alamat}
                 onChangeText={(text) => {
-    setLokasi(text);
-    setEditing(true);
-  }}
+                  setLokasi(text);
+                  setEditing(true);
+                }}
               />
             </View>
           </View>
@@ -200,7 +220,7 @@ export default function AmbilTanpaRibet({navigation}) {
                 justifyContent: 'center',
               }}>
               <Image
-                style={{tintColor: 'white', height: 30, width: 30}}
+                style={{ tintColor: 'white', height: 30, width: 30 }}
                 source={Calenda1}
               />
               <Text
@@ -220,10 +240,10 @@ export default function AmbilTanpaRibet({navigation}) {
                 padding: 10,
                 height: 40,
                 borderWidth: 1,
-                borderColor:'white',
+                borderColor: 'white',
               }}>
               <TouchableOpacity onPress={showDatePicker}>
-                <Text style={{color: 'black', fontFamily: 'Poppins-SemiBold'}}>
+                <Text style={{ color: 'black', fontFamily: 'Poppins-SemiBold' }}>
                   {selectedDate
                     ? selectedDate.toLocaleDateString()
                     : 'Pilih Tanggal'}
@@ -244,10 +264,10 @@ export default function AmbilTanpaRibet({navigation}) {
                 onDateChange={handleConfirmDate}
                 mode="date"
                 textColor="black"
-                style={{borderWidth: 1}}
+                style={{ borderWidth: 1 }}
               />
               {selectedDate && (
-                <TouchableOpacity style={{width: '100%'}} onPress={handleOk}>
+                <TouchableOpacity style={{ width: '100%' }} onPress={handleOk}>
                   <View
                     style={{
                       backgroundColor: colors.primary,
@@ -257,7 +277,7 @@ export default function AmbilTanpaRibet({navigation}) {
                       marginTop: 10,
                     }}>
                     <Text
-                      style={{color: 'white', fontFamily: 'Poppins-SemiBold'}}>
+                      style={{ color: 'white', fontFamily: 'Poppins-SemiBold' }}>
                       Konfirmasi
                     </Text>
                   </View>
@@ -268,32 +288,32 @@ export default function AmbilTanpaRibet({navigation}) {
 
           {/* CHECKBOXES */}
 
-          <View style={{marginTop: '10%', alignItems:'center'}}>
+          <View style={{ marginTop: '10%', alignItems: 'center' }}>
             {/* TEKS PILIH JENIS LAYANAN */}
             <View>
-              <Text style={{fontFamily: 'Poppins-SemiBold', fontSize: 15}}>
+              <Text style={{ fontFamily: 'Poppins-SemiBold', fontSize: 15 }}>
                 Pilih Jenis Layanan
               </Text>
             </View>
             {/* CHECKBOXES */}
-            <View style={{flexDirection: 'row'}}>
-              <View style={{flexDirection: 'row', alignItems: 'center', }}>
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                 <CheckBox
                   value={cuciSajaChecked}
                   onValueChange={handleCuciSajaChange}
-                  tintColors={{true: colors.primary, false: 'gray'}}
+                  tintColors={{ true: colors.primary, false: 'gray' }}
                 />
-                <Text style={{fontFamily: 'Poppins-Regular', fontSize: 12, marginRight:10, }}>
+                <Text style={{ fontFamily: 'Poppins-Regular', fontSize: 12, marginRight: 10, }}>
                   Cuci Saja
                 </Text>
               </View>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <CheckBox
                   value={siapPakaiChecked}
                   onValueChange={handleSiapPakaiChange}
-                  tintColors={{true: colors.primary, false: 'gray'}}
+                  tintColors={{ true: colors.primary, false: 'gray' }}
                 />
-                <Text style={{fontFamily: 'Poppins-Regular', fontSize: 12}}>
+                <Text style={{ fontFamily: 'Poppins-Regular', fontSize: 12 }}>
                   Siap Pakai
                 </Text>
               </View>
@@ -301,9 +321,9 @@ export default function AmbilTanpaRibet({navigation}) {
           </View>
         </View>
 
-        <View style={{padding: 10, alignItems: 'center', marginTop: 20}}>
+        <View style={{ padding: 10, alignItems: 'center', marginTop: 20 }}>
           <TouchableOpacity
-            onPress={handlePesan  }
+            onPress={handlePesan}
             style={{
               padding: 10,
               backgroundColor: colors.primary,
@@ -324,8 +344,8 @@ export default function AmbilTanpaRibet({navigation}) {
           </TouchableOpacity>
         </View>
 
-        <View style={{alignItems: 'center', marginTop: '10%'}}>
-          <Image style={{height: 200, width: 200}} source={LogoLaundry} />
+        <View style={{ alignItems: 'center', marginTop: '10%' }}>
+          <Image style={{ height: 200, width: 200 }} source={LogoLaundry} />
         </View>
       </ScrollView>
     </View>
