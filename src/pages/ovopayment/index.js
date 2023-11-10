@@ -1,8 +1,10 @@
-import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native'
+import { View, Text, ScrollView, Image, TouchableOpacity, Linking } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { GopayIcon, IconRumah, LogoWhatsApp, OVOIcon, OvoIcon, WhatsAppLogo } from '../../assets'
 import colors from '../../utils/colors'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { WA_ADMIN, apiURL } from '../../localstorage';
 
 export default function OVOPayment({ navigation, route }) {
   const [hargaPakaian, setHargaPakaian] = useState(0);
@@ -49,7 +51,13 @@ export default function OVOPayment({ navigation, route }) {
             <Text style={{ fontFamily: 'Poppins-SemiBold', fontSize: 12, textAlign: "center" }}>Silakan kirim bukti transfer pada{'\n'}nomor admin laundry ini</Text>
           </View>
           <View style={{ alignItems: 'center' }}>
-            <Image style={{ height: 101, width: 101, }} source={LogoWhatsApp} />
+            <TouchableOpacity onPress={() => {
+              Linking.openURL('https://wa.me/' + WA_ADMIN)
+            }}>
+              <View >
+                <Image style={{ width: 100, height: 100 }} source={LogoWhatsApp} />
+              </View>
+            </TouchableOpacity>
             <Text style={{ fontFamily: "Poppins-SemiBold", fontSize: 12, textAlign: "center" }}>Jika ada pertanyaan atau kendala adna dapat juga menghubungi WA admin</Text>
           </View>
         </View>
@@ -60,7 +68,12 @@ export default function OVOPayment({ navigation, route }) {
           <Image style={{ width: 30, height: 45, }} source={IconRumah} />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("CancelPilihSendiri1")} style={{ padding: 10, backgroundColor: colors.errormessage }}>
+        <TouchableOpacity onPress={() => {
+          navigation.navigate("CancelPilihSendiri1", {
+            kode: route.params.kode
+          })
+
+        }} style={{ padding: 10, backgroundColor: colors.errormessage }}>
           <Text style={{ color: 'white', fontFamily: 'Poppins-SemiBold', fontSize: 15, textAlign: 'center' }}>Cancel Pesanan</Text>
         </TouchableOpacity>
       </View>

@@ -1,10 +1,11 @@
-import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native'
+import { View, Text, ScrollView, Image, TouchableOpacity, Linking } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { IconRumah, LogoWhatsApp, QrisLaundry, WhatsAppLogo } from '../../assets'
 import colors from '../../utils/colors'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import 'intl';
 import 'intl/locale-data/jsonp/en';
+import { WA_ADMIN } from '../../localstorage'
 export default function QrisPaymemnt({ navigation, route }) {
     const [hargaPakaian, setHargaPakaian] = useState(0);
     useEffect(() => {
@@ -51,8 +52,12 @@ export default function QrisPaymemnt({ navigation, route }) {
                 </View>
 
                 <View style={{ alignItems: 'center', }}>
-                    <TouchableOpacity>
-                        <Image style={{ width: 100, height: 100 }} source={LogoWhatsApp} />
+                    <TouchableOpacity onPress={() => {
+                        Linking.openURL('https://wa.me/' + WA_ADMIN)
+                    }}>
+                        <View >
+                            <Image style={{ width: 100, height: 100 }} source={LogoWhatsApp} />
+                        </View>
                     </TouchableOpacity>
                 </View>
 
@@ -66,7 +71,12 @@ export default function QrisPaymemnt({ navigation, route }) {
                     <Image style={{ width: 30, height: 45, }} source={IconRumah} />
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => navigation.navigate("CancelPilihSendiri1")} style={{ padding: 10, backgroundColor: colors.errormessage }}>
+                <TouchableOpacity onPress={() => {
+                    navigation.navigate("CancelPilihSendiri1", {
+                        kode: route.params.kode
+                    })
+
+                }} style={{ padding: 10, backgroundColor: colors.errormessage }}>
                     <Text style={{ color: 'white', fontFamily: 'Poppins-SemiBold', fontSize: 15, textAlign: 'center' }}>Cancel Pesanan</Text>
                 </TouchableOpacity>
             </View>

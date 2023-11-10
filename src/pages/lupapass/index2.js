@@ -65,7 +65,7 @@ export default function LupaPassword2({ navigation, route }) {
                                     otp: x
                                 })
                             }} maxLength={4} autoFocus style={{
-                                backgroundColor: "white", borderWidth: 1, textAlign: 'center', borderRadius: 10, height: 40, color: "black",
+                                backgroundColor: "white", borderWidth: 1, textAlign: 'left', borderRadius: 10, height: 40, color: "black",
                                 fontFamily: 'Poppins-Medium', fontSize: 12, paddingRight: 10, paddingLeft: 10,
                             }} placeholder='masukan kode OTP' placeholderTextColor='black' keyboardType='number-pad' />
 

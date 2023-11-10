@@ -1,8 +1,9 @@
-import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, Image, TouchableOpacity, ScrollView, Linking } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import colors from '../../utils/colors'
 import { IconRumah, LogoBCA, LogoWhatsApp } from '../../assets'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { WA_ADMIN } from '../../localstorage'
 export default function BankPayment2({ navigation, route }) {
   const [hargaPakaian, setHargaPakaian] = useState(0);
   useEffect(() => {
@@ -63,11 +64,13 @@ export default function BankPayment2({ navigation, route }) {
             </View>
 
             {/* LOGO WA */}
-            <View>
+            <TouchableOpacity onPress={() => {
+              Linking.openURL('https://wa.me/' + WA_ADMIN)
+            }}>
               <View >
                 <Image style={{ width: 100, height: 100 }} source={LogoWhatsApp} />
               </View>
-            </View>
+            </TouchableOpacity>
 
             <View>
               <Text style={{ textAlign: 'center', fontFamily: 'Poppins-SemiBold', fontSize: 12, marginTop: 10, }}>

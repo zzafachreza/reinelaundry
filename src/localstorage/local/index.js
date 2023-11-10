@@ -27,4 +27,6 @@ export const LoginURL = 'https://laundry.okeadmin.com/api/login';
 export const UploadProfile = "https://laundry.okeadmin.com/Api/uploadprofile";
 export const editProfile = "https://laundry.okeadmin.com/Api/editprofile";
 export const MYAPP = 'REINE LAUNDRY';
+export const WA_ADMIN = '6282123828206';
+
 

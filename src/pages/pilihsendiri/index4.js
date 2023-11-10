@@ -5,7 +5,8 @@ import colors from '../../utils/colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import 'intl';
 import 'intl/locale-data/jsonp/en';
-
+import axios from 'axios';
+import { apiURL } from '../../localstorage';
 export default function PilihSendiri4({ navigation, route }) {
   const [typedText, setTypedText] = useState('');
   const [kirim, setKirim] = useState(route.params);
@@ -14,11 +15,19 @@ export default function PilihSendiri4({ navigation, route }) {
     return accumulator + parseFloat(object.qty * object.harga_produk);
   }, 0);
 
-  useEffect(() => {
+  const updatePayment = (tujuan, method) => {
+    axios.post(apiURL + 'transaksi_payment', {
+      kode: kirim.kode,
+      jenis_pembayaran: method
+    }).then(res => {
+      console.log(res.data)
+      navigation.navigate(tujuan, {
+        total: totalTransaksi,
+        kode: kirim.kode
+      })
+    })
 
-
-
-  }, []);
+  }
 
   const __renderItem = ({ item }) => {
     if (item.qty > 0) {
@@ -78,7 +87,7 @@ export default function PilihSendiri4({ navigation, route }) {
 
         {/* RINCIAN PAKAIAN */}
         <View style={{ padding: 20, }}>
-          <Text style={{ fontFamily: 'Poppins-SemiBold', fontSize: 15, }}>Rincian Pakaian</Text>
+          <Text style={{ fontFamily: 'Poppins-SemiBold', fontSize: 15, }}>Rincian Pakaian {kirim.kode}</Text>
 
           <FlatList data={kirim.produk} renderItem={__renderItem} numColumns={2} />
 
@@ -103,45 +112,35 @@ export default function PilihSendiri4({ navigation, route }) {
             <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 15 }}>
               {/* PAYMENT BANK */}
               <View>
-                <TouchableOpacity onPress={() => navigation.navigate("BankPayment2", {
-                  total: totalTransaksi
-                })}>
+                <TouchableOpacity onPress={() => updatePayment('BankPayment2', 'Transfer Via Bank')}>
                   <Image style={{ height: 50, width: 50, }} source={BankPayIcon} />
                 </TouchableOpacity>
               </View>
 
               {/* PAYMENT BANK */}
               <View>
-                <TouchableOpacity onPress={() => navigation.navigate("OVOPayment", {
-                  total: totalTransaksi
-                })}>
+                <TouchableOpacity onPress={() => updatePayment('OVOPayment', 'Transfer Via OVO')}>
                   <Image style={{ height: 40, width: 40, }} source={OVOIcon} />
                 </TouchableOpacity>
               </View>
 
               {/* PAYMENT BANK */}
               <View>
-                <TouchableOpacity onPress={() => navigation.navigate("QrisPayment", {
-                  total: totalTransaksi
-                })}>
+                <TouchableOpacity onPress={() => updatePayment('QrisPayment', 'QRIS')}>
                   <Image style={{ height: 50, width: 50, top: -5 }} source={Shoopepayicon} />
                 </TouchableOpacity>
               </View>
 
               {/* PAYMENT BANK */}
               <View>
-                <TouchableOpacity onPress={() => navigation.navigate("GopayPayment", {
-                  total: totalTransaksi
-                })}>
+                <TouchableOpacity onPress={() => updatePayment('GopayPayment', 'Transfer Via GOPAY')}>
                   <Image style={{ height: 40, width: 40, }} source={GopayIcon} />
                 </TouchableOpacity>
               </View>
 
               {/* PAYMENT BANK */}
               <View>
-                <TouchableOpacity onPress={() => navigation.navigate("CODPayment", {
-                  total: totalTransaksi
-                })}>
+                <TouchableOpacity onPress={() => updatePayment('CODPayment', 'COD QRIS')}>
                   <Image style={{ height: 40, width: 40, }} source={CODIcon} />
                 </TouchableOpacity>
               </View>

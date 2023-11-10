@@ -7,10 +7,27 @@ import {
   BankPayIcon, CODIcon, GopayIcon, LeftArrow, MethodIcon, NotifikasiAmbilTanpaRibet3, OVOIcon, RincianPesananBantal, RincianPesananCelanaPanjang,
   RincianPesananCelanaPendek, RincianPesananJaket, RincianPesananKaos, Shoopepayicon, back,
 } from '../../assets';
-
+import axios from 'axios';
+import { apiURL } from '../../localstorage';
 
 export default function AmbilTanpaRibet3({ navigation, route }) {
   const item = route.params;
+
+  const updatePayment = (tujuan, method) => {
+    axios.post(apiURL + 'transaksi_payment', {
+      kode: route.params.kode,
+      jenis_pembayaran: method
+    }).then(res => {
+      console.log(res.data)
+      navigation.navigate(tujuan, {
+        total: route.params.total_harga,
+        kode: route.params.kode
+      })
+    })
+
+  }
+
+
   const __renderItem = ({ item }) => {
     if (item.qty > 0) {
       return (
@@ -74,7 +91,7 @@ export default function AmbilTanpaRibet3({ navigation, route }) {
 
           {/* RINCIAN PAKAIAN */}
           <View style={{ padding: 20, }}>
-            <Text style={{ fontFamily: 'Poppins-SemiBold', fontSize: 15, }}>Rincian Pakaian</Text>
+            <Text style={{ fontFamily: 'Poppins-SemiBold', fontSize: 15, }}>Rincian Pakaian {item.kode}</Text>
 
             <FlatList data={item.produk} renderItem={__renderItem} numColumns={2} />
             {/* GARIS */}
@@ -98,45 +115,35 @@ export default function AmbilTanpaRibet3({ navigation, route }) {
               <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 15 }}>
                 {/* PAYMENT BANK */}
                 <View>
-                  <TouchableOpacity onPress={() => navigation.navigate("BankPayment2", {
-                    total: item.total_harga
-                  })}>
+                  <TouchableOpacity onPress={() => updatePayment('BankPayment2', 'Transfer Via Bank')}>
                     <Image style={{ height: 50, width: 50, }} source={BankPayIcon} />
                   </TouchableOpacity>
                 </View>
 
                 {/* PAYMENT BANK */}
                 <View>
-                  <TouchableOpacity onPress={() => navigation.navigate("OVOPayment", {
-                    total: item.total_harga
-                  })}>
+                  <TouchableOpacity onPress={() => updatePayment('OVOPayment', 'Transfer Via OVO')}>
                     <Image style={{ height: 40, width: 40, }} source={OVOIcon} />
                   </TouchableOpacity>
                 </View>
 
                 {/* PAYMENT BANK */}
                 <View>
-                  <TouchableOpacity onPress={() => navigation.navigate("QrisPayment", {
-                    total: item.total_harga
-                  })}>
+                  <TouchableOpacity onPress={() => updatePayment('QrisPayment', 'QRIS')}>
                     <Image style={{ height: 50, width: 50, top: -5 }} source={Shoopepayicon} />
                   </TouchableOpacity>
                 </View>
 
                 {/* PAYMENT BANK */}
                 <View>
-                  <TouchableOpacity onPress={() => navigation.navigate("GopayPayment", {
-                    total: item.total_harga
-                  })}>
+                  <TouchableOpacity onPress={() => updatePayment('GopayPayment', 'Transfer Via GOPAY')}>
                     <Image style={{ height: 40, width: 40, }} source={GopayIcon} />
                   </TouchableOpacity>
                 </View>
 
                 {/* PAYMENT BANK */}
                 <View>
-                  <TouchableOpacity onPress={() => navigation.navigate("CODPayment", {
-                    total: item.total_harga
-                  })}>
+                  <TouchableOpacity onPress={() => updatePayment('CODPayment', 'COD QRIS')}>
                     <Image style={{ height: 40, width: 40, }} source={CODIcon} />
                   </TouchableOpacity>
                 </View>
@@ -144,6 +151,7 @@ export default function AmbilTanpaRibet3({ navigation, route }) {
               </View>
 
             </View>
+
 
 
             <TouchableOpacity style={{ width: '100%' }} onPress={() => {

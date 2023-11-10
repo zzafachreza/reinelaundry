@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Image, Linking, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import { HandPhoneLogo, LeftArrow, LogoLaundry, LogoWhatsApp, MapPointLogo, OpenLogo, ProfileLaundry, WhatsAppLogo, back } from '../../assets'
 import colors from '../../utils/colors'
+import { WA_ADMIN } from '../../localstorage'
 
 export default function InformasiLaundry({ navigation }) {
   const handleBack = () => {
@@ -92,7 +93,7 @@ export default function InformasiLaundry({ navigation }) {
               {open &&
 
                 <TouchableWithoutFeedback onPress={() => {
-                  Linking.openURL('https://wa.me/6282123828206')
+                  Linking.openURL('https://wa.me/' + WA_ADMIN)
                 }}>
                   <Text style={{
                     position: "absolute",

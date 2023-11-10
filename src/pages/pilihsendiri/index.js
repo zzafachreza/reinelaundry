@@ -115,7 +115,7 @@ export default function PilihSendiri1({ navigation }) {
           }}>
             <TouchableOpacity onPress={() => cartUpdate(index, 'ADD')} style={{
               paddingHorizontal: 10,
-              backgroundColor: item.qty > 0 && item.qty !== null ? '#FFFFFF' : colors.primary,
+              backgroundColor: item.qty > 0 && item.qty !== null ? colors.white : colors.primary,
               marginBottom: 1,
               justifyContent: 'center',
               alignItems: 'center',
@@ -124,7 +124,7 @@ export default function PilihSendiri1({ navigation }) {
             }}>
               <Text style={{
                 fontSize: 20,
-                color: item.qty > 0 && item.qty !== null ? colors.primary : '#FFFFFF',
+                color: item.qty > 0 && item.qty !== null ? colors.primary : colors.white,
               }}>+</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => cartUpdate(index, 'MIN')} style={{
@@ -134,11 +134,13 @@ export default function PilihSendiri1({ navigation }) {
               justifyContent: 'center',
               alignItems: 'center',
               paddingHorizontal: 10,
-              backgroundColor: item.qty > 0 && item.qty !== null ? colors.primary : '#FFFFFF'
+              borderWidth: 1,
+              borderColor: item.qty > 0 && item.qty !== null ? colors.white : colors.border,
+              backgroundColor: item.qty > 0 && item.qty !== null ? colors.primary : colors.border
             }}>
               <Text style={{
                 fontSize: 20,
-                color: item.qty > 0 && item.qty !== null ? '#FFFFFF' : colors.primary
+                color: item.qty > 0 && item.qty !== null ? colors.border : colors.primary
               }}>-</Text>
             </TouchableOpacity>
           </View>

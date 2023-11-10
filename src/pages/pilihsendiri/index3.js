@@ -127,6 +127,7 @@ export default function PilihSendiri3({ navigation, route }) {
         console.log(res.data);
         navigation.navigate('PilihSendiri4', {
           fid_user: data.id,
+          kode: res.data,
           lokasi: lokasi.length == 0 ? data.alamat : lokasi,
           tanggal_ambil: selectedDate,
           jenis: siapPakaiChecked ? 'Siap Pakai' : 'Cuci Saja',
