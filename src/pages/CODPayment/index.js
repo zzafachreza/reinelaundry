@@ -33,6 +33,15 @@ export default function CODPayment({ navigation }) {
                             <Image style={{ width: 100, height: 100 }} source={LogoWhatsApp} />
                         </View>
                     </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => {
+                        navigation.navigate("CancelPilihSendiri1", {
+                            kode: route.params.kode
+                        })
+
+                    }} style={{ padding: 10, backgroundColor: colors.errormessage }}>
+                        <Text style={{ color: 'white', fontFamily: 'Poppins-SemiBold', fontSize: 15, textAlign: 'center' }}>Cancel Pesanan</Text>
+                    </TouchableOpacity>
                 </View>
 
                 <View style={{ alignItems: 'center', marginTop: 10 }}>

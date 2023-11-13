@@ -72,6 +72,15 @@ export default function BankPayment2({ navigation, route }) {
               </View>
             </TouchableOpacity>
 
+            <TouchableOpacity onPress={() => {
+              navigation.navigate("CancelPilihSendiri1", {
+                kode: route.params.kode
+              })
+
+            }} style={{ padding: 10, backgroundColor: colors.errormessage }}>
+              <Text style={{ color: 'white', fontFamily: 'Poppins-SemiBold', fontSize: 15, textAlign: 'center' }}>Cancel Pesanan</Text>
+            </TouchableOpacity>
+
             <View>
               <Text style={{ textAlign: 'center', fontFamily: 'Poppins-SemiBold', fontSize: 12, marginTop: 10, }}>
                 Jika ada pertanyaan atau kendala adna dapat juga{'\n'}menghubungi WA admin
