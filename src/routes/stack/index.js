@@ -38,6 +38,9 @@ import QrisPaymemnt2 from '../../pages/qrispayment/index2';
 import OVOPayment2 from '../../pages/ovopayment/index2';
 import LupaPassword from '../../pages/lupapass';
 import LupaPassword2 from '../../pages/lupapass/index2';
+import TransaksiDetail from '../../pages/profile/TransaksiDetail';
+import Transaksi from '../../pages/profile/Transaksi';
+
 
 
 const Stack = createNativeStackNavigator();
@@ -79,6 +82,10 @@ function MyStack() {
       <Stack.Screen name="QrisPayment2" component={QrisPaymemnt2} options={{ headerShown: false }} />
       <Stack.Screen name="LupaPassword" component={LupaPassword} options={{ headerShown: false }} />
       <Stack.Screen name="LupaPassword2" component={LupaPassword2} options={{ headerShown: false }} />
+
+      <Stack.Screen name="TransaksiDetail" component={TransaksiDetail} options={{ headerShown: false }} />
+      <Stack.Screen name="Transaksi" component={Transaksi} options={{ headerShown: false }} />
+
 
 
 

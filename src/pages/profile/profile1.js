@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, ScrollView, Alert, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ScrollView, Alert, FlatList, TouchableNativeFeedback } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import colors from '../../utils/colors';
 import { DefaultPorfile, IconKeluar, IconLogout, KoasKaki, LeftArrow, LogoCeklis, MeProfile, RightArrow, SarungBantal, editIcon } from '../../assets';
@@ -74,49 +74,51 @@ export default function Profile1({ navigation }) {
 
   const __renderItem = ({ item }) => {
     return (
-      <View style={{
-        marginVertical: 5,
-        marginLeft: 30,
-        marginRight: 10,
-        borderRadius: 10,
-        position: 'relative',
-        width: 200,
-        height: 100,
-        padding: 10,
-        backgroundColor: colors.primary
-      }}>
-        <Text style={{
-          fontFamily: 'Poppins-Regular',
-          color: colors.white,
-          textAlign: 'right'
-        }}>{item.tanggal}</Text>
+      <TouchableNativeFeedback onPress={() => navigation.navigate('TransaksiDetail', item)}>
         <View style={{
-          bottom: 10,
-          left: -30,
-          position: 'absolute',
-          flexDirection: 'row',
-          alignItems: 'center'
+          marginVertical: 5,
+          marginLeft: 30,
+          marginRight: 10,
+          borderRadius: 10,
+          position: 'relative',
+          width: 200,
+          height: 100,
+          padding: 10,
+          backgroundColor: colors.primary
         }}>
-          <Image source={{
-            uri: item.image
-          }} style={{
-            width: 70,
-            height: 70,
-          }} />
+          <Text style={{
+            fontFamily: 'Poppins-Regular',
+            color: colors.white,
+            textAlign: 'right'
+          }}>{item.tanggal}</Text>
           <View style={{
-            paddingLeft: 10,
+            bottom: 10,
+            left: -30,
+            position: 'absolute',
+            flexDirection: 'row',
+            alignItems: 'center'
           }}>
-            <Text style={{
-              fontFamily: 'Poppins-SemiBold',
-              color: colors.white,
-            }}>{item.nama_produk}</Text>
-            <Text style={{
-              fontFamily: 'Poppins-Regular',
-              color: colors.white,
-            }}>Rp. {new Intl.NumberFormat().format(item.total)}</Text>
+            <Image source={{
+              uri: item.image
+            }} style={{
+              width: 70,
+              height: 70,
+            }} />
+            <View style={{
+              paddingLeft: 10,
+            }}>
+              <Text style={{
+                fontFamily: 'Poppins-SemiBold',
+                color: colors.white,
+              }}>{item.nama_produk}</Text>
+              <Text style={{
+                fontFamily: 'Poppins-Regular',
+                color: colors.white,
+              }}>Rp. {new Intl.NumberFormat().format(item.total)}</Text>
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableNativeFeedback>
     )
   }
 
@@ -207,12 +209,14 @@ export default function Profile1({ navigation }) {
 
           <FlatList data={transaksi} renderItem={__renderItem} horizontal />
           {/* See More */}
-          <View style={{ alignItems: 'flex-end', top: 10 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-              <Text style={{ fontFamily: 'Poppins-Regular', color: colors.primary, fontSize: 12, }}>See More</Text>
-              <Image style={{ width: 24, height: 24, tintColor: colors.primary }} source={RightArrow} />
+          <TouchableNativeFeedback onPress={() => navigation.navigate('Transaksi')}>
+            <View style={{ alignItems: 'flex-end', top: 10 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                <Text style={{ fontFamily: 'Poppins-Regular', color: colors.primary, fontSize: 12, }}>See More</Text>
+                <Image style={{ width: 24, height: 24, tintColor: colors.primary }} source={RightArrow} />
+              </View>
             </View>
-          </View>
+          </TouchableNativeFeedback>
         </View>
 
 
